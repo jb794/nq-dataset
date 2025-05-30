@@ -8,7 +8,7 @@ import query_sampling
 import similarity
 import mean_std_computation
 import transform
-import bert_semantic_repetition as rep
+import bert_semantic_repetition as rep  #function to get optimazation of repetition rate
 from scipy.stats import multivariate_normal
 import scipy.stats as stats
 from torch.distributions import MultivariateNormal
@@ -21,17 +21,17 @@ from sentence_transformers import SentenceTransformer
 ## PARAMETERS
 alpha = 1  # Zipfian exponent
 n = 1000  # number of documents
-num_iterations = 10000
-R = 2.0 #repetition rate
+num_iterations = 1000
+R = 2.0 #repetition rate based on # of tokens in a query (use fp number)
 dtype = torch.float32  
 
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased") #same model used for original tokenization
-model     = BertModel.from_pretrained("bert-base-uncased")# same model used for importance
+model     = BertModel.from_pretrained("intfloat/e5-large-v2")# same model used for importance
 device    = "cuda" if torch.cuda.is_available() else "cpu"
 model     = model.to(device)
 
 vocab_size = tokenizer.vocab_size
-print(f"vocab_size: {vocab_size}")
+#print(f"vocab_size: {vocab_size}")
 
 qa_pairs = []
 with open("expanded30qaset.jsonl", "r", encoding="utf-8") as f:
@@ -77,8 +77,6 @@ for i,epsilon in enumerate(pr_vector):
     actual_rate_total = 0
     
     for j in range(num_iterations):
-
-
 
         ###################### QUERY SAMPLING ########################
         q_idx        = random.randrange(len(query_ids))
