@@ -1,6 +1,5 @@
 #top 100 docs dataset top-k evaluation with BERT embeddings
 import sys
-import os
 sys.path.insert(0, "/home/joshlocal/ISIT")    #my path to bert_semantic_repetition.py for optimization encoding
 
 #imports
@@ -11,11 +10,9 @@ import numpy as np
 from transformers import BertTokenizer
 from sentence_transformers import SentenceTransformer
 import bert_semantic_repetition as rep
-import similarity
 import time
 
 # PARAMETERS
-alpha = 1              # Zipfian exponent
 num_iterations = 1000
 R = 1.0                # repetition rate
 
